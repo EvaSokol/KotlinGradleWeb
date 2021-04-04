@@ -7,28 +7,28 @@ import kotlinx.coroutines.*
 private val scope = MainScope()
 
 val App = functionalComponent<RProps> { _ ->
-    val (shoppingList, setShoppingList) = useState(emptyList<ShoppingListItem>())
+    val (marketList, setMarketList) = useState(emptyList<MarketListItem>())
 
     useEffect(dependencies = listOf()) {
         scope.launch {
-            setShoppingList(getShoppingList())
+            setMarketList(getMarketList())
         }
     }
 
     h1 {
-        +"Full-Stack Shopping List"
+        +"Full-Stack Market List"
     }
     ul {
-        shoppingList.sortedByDescending(ShoppingListItem::priority).forEach { item ->
+        marketList.sortedByDescending(MarketListItem::number).forEach { item ->
             li {
                 key = item.toString()
                 attrs.onClickFunction = {
                     scope.launch {
-                        deleteShoppingListItem(item)
-                        setShoppingList(getShoppingList())
+                        deleteMarketListItem(item)
+                        setMarketList(getMarketList())
                     }
                 }
-                +"[${item.priority}] ${item.desc} "
+                +"[${item.number}] ${item.name} "
             }
         }
     }
@@ -36,10 +36,10 @@ val App = functionalComponent<RProps> { _ ->
         InputComponent,
         props = jsObject {
             onSubmit = { input ->
-                val cartItem = ShoppingListItem(input.replace("!", ""), input.count { it == '!' })
+                val cartItem = MarketListItem(input.replace("!", ""), input.count { it == '!' })
                 scope.launch {
-                    addShoppingListItem(cartItem)
-                    setShoppingList(getShoppingList())
+                    addMarketListItem(cartItem)
+                    setMarketList(getMarketList())
                 }
             }
         }

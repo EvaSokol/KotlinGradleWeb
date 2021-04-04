@@ -1,1 +1,1 @@
-DELETE http://localhost:9090/shoppingList/AN_ID_GOES_HERE
+DELETE http://localhost:9090/marketList/AN_ID_GOES_HERE

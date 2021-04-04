@@ -1,7 +1,7 @@
-POST http://localhost:9090/shoppingList
+POST http://localhost:9090/marketList
 Content-Type: application/json
 
 {
-  "desc": "Peppers 🌶",
-  "priority": 5
+  "name": "Peppers 🌶",
+  "number": 5
 }
