@@ -28,15 +28,28 @@ val App = functionalComponent<RProps> { _ ->
                         setMarketList(getMarketList())
                     }
                 }
-                +"[${item.number}] ${item.name} "
+                +"[${item.id}] ${item.name} - ${item.number}"
             }
         }
     }
+
+    var cartItemName = ""
+//    val cartItemNumber = 0
+
     child(
-        InputComponent,
+        InputName,
         props = jsObject {
             onSubmit = { input ->
-                val cartItem = MarketListItem(input.replace("!", ""), input.count { it == '!' })
+                cartItemName = input
+            }
+        }
+    )
+
+    child(
+        InputNumber,
+        props = jsObject {
+            onSubmit = { input ->
+                val cartItem = MarketListItem(cartItemName, input.toInt())
                 scope.launch {
                     addMarketListItem(cartItem)
                     setMarketList(getMarketList())

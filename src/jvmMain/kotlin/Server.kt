@@ -16,9 +16,9 @@ import org.litote.kmongo.reactivestreams.KMongo
 val connectionString: ConnectionString? = System.getenv("MONGODB_URI")?.let {
     ConnectionString("$it?retryWrites=false")
 }
-
 val client = if (connectionString != null) KMongo.createClient(connectionString).coroutine else KMongo.createClient().coroutine
-val database = client.getDatabase(connectionString?.database ?: "test")
+val database = client.getDatabase(connectionString?.database ?: "SaladMarket")
+
 val collection = database.getCollection<MarketListItem>()
 
 fun main() {
