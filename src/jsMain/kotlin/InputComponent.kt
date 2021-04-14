@@ -2,14 +2,16 @@ import react.*
 import react.dom.*
 import kotlinx.html.js.*
 import kotlinx.html.InputType
+import kotlinx.html.submitInput
 import org.w3c.dom.events.Event
 import org.w3c.dom.HTMLInputElement
 
 external interface InputProps : RProps {
-    var onSubmit: (String) -> Unit
+//    var onSubmitName: (String) -> Unit
+//    var onSubmitNumber: (String) -> Unit
+    var onSubmitButton: (String, String) -> Unit
 }
 
-var inputNameText = "input name here"
 /*
 Текущее поведение:
 
@@ -45,49 +47,65 @@ var inputNameText = "input name here"
 Имя БД "SaladMarket"
  */
 
+var inputNameText = "input name here"
+var inputNumberText = "input number here"
+var buttonText = "Save Data"
 
-val InputName = functionalComponent<InputProps> { props ->
-    val (text, setText) = useState("input name here")
+val InputMarketListItem = functionalComponent<InputProps> { props ->
+    val (nameText, setNameText) = useState(inputNameText)
+    val (numberText, setNumberText) = useState("1")
+    val (buttonText, setButtonText) = useState(buttonText)
 
-    val submitHandler: (Event) -> Unit = {
+    var cartItemName = ""
+    var cartItemNumber = ""
+
+    val submitHandlerName: (Event) -> Unit = {
         it.preventDefault()
-        setText(inputNameText)
-        props.onSubmit(text)
-//        setText(text)
+        setNameText(inputNameText)
+//        props.onSubmitButton(nameText)
     }
 
-    val changeHandler: (Event) -> Unit = {
+    val submitHandlerNumber: (Event) -> Unit = {
+        it.preventDefault()
+        setNumberText(inputNumberText)
+//        props.onSubmitNumber(numberText)
+    }
+
+    val submitHandlerButton: (Event) -> Unit = {
+        it.preventDefault()
+        setButtonText(buttonText)
+        props.onSubmitButton(nameText, numberText)
+    }
+
+    val changeHandlerName: (Event) -> Unit = {
         val value = (it.target as HTMLInputElement).value
-        setText(value)
+        setNameText(value)
+        cartItemName = value
+    }
+
+    val changeHandlerNumber: (Event) -> Unit = {
+        val value = (it.target as HTMLInputElement).value
+        setNumberText(value)
+        cartItemNumber = value
     }
 
     form {
-        attrs.onSubmitFunction = submitHandler
         input(InputType.text) {
-            attrs.onChangeFunction = changeHandler
-            attrs.value = text
+            attrs.onChangeFunction = changeHandlerName
+            attrs.value = nameText
+//            attrs.onSubmitFunction = submitHandlerName
+
         }
-    }
-}
-val InputNumber = functionalComponent<InputProps> { props ->
-    val (text, setText) = useState("1")
-
-    val submitHandler: (Event) -> Unit = {
-        it.preventDefault()
-        setText("input number here")
-        props.onSubmit(text)
-    }
-
-    val changeHandler: (Event) -> Unit = {
-        val value = (it.target as HTMLInputElement).value
-        setText(value)
-    }
-
-    form {
-        attrs.onSubmitFunction = submitHandler
         input(InputType.text) {
-            attrs.onChangeFunction = changeHandler
-            attrs.value = text
+            attrs.onChangeFunction = changeHandlerNumber
+            attrs.value = numberText
+//            attrs.onSubmitFunction = submitHandlerNumber
+        }
+        input(InputType.submit) {
+//            attrs.onChangeFunction = changeHandler
+            attrs.value = buttonText
+            attrs.submitInput {  }
+            attrs.onClickFunction = {props.onSubmitButton(cartItemName, cartItemNumber)}
         }
     }
 }

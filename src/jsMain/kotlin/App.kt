@@ -33,23 +33,20 @@ val App = functionalComponent<RProps> { _ ->
         }
     }
 
-    var cartItemName = ""
-//    val cartItemNumber = 0
-
     child(
-        InputName,
+        InputMarketListItem,
         props = jsObject {
-            onSubmit = { input ->
-                cartItemName = input
-            }
-        }
-    )
+//            var cartItemName = ""
+//            var cartItemNumber = 0
 
-    child(
-        InputNumber,
-        props = jsObject {
-            onSubmit = { input ->
-                val cartItem = MarketListItem(cartItemName, input.toInt())
+//            onSubmitName = { inputName ->
+//                cartItemName = inputName
+//            }
+//            onSubmitNumber = { inputNumber ->
+//                cartItemNumber = inputNumber.toInt()
+//            }
+            onSubmitButton = {inputName, inputNumber ->
+                val cartItem = MarketListItem(inputName, inputNumber.toInt())
                 scope.launch {
                     addMarketListItem(cartItem)
                     setMarketList(getMarketList())
@@ -57,4 +54,26 @@ val App = functionalComponent<RProps> { _ ->
             }
         }
     )
+
+//    child(
+//        InputMarketListItem,
+//        props = jsObject {
+//            onSubmitNumber = { input ->
+//                cartItemNumber = input.toInt()
+//            }
+//        }
+//    )
+//
+//    child(
+//        InputMarketListItem,
+//        props = jsObject {
+//            onSubmitButton = { _ ->
+//                val cartItem = MarketListItem(cartItemName, cartItemNumber)
+//                scope.launch {
+//                    addMarketListItem(cartItem)
+//                    setMarketList(getMarketList())
+//                }
+//            }
+//        }
+//    )
 }
